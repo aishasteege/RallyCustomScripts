@@ -1,32 +1,31 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!-- Copyright (c) 2011  Rally Software Development Corp.  All rights reserved -->
 <html>
-
 <head>
     <title>Print Story Cards</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <meta name="Name" content="App: Print Story Cards" />
-    <meta name="Version" content="2012.02.21" />
-    <meta name="Vendor" content="Rally Software" />
+    <meta name="Name" content="App: Print Story Cards"/>
+    <meta name="Version" content="2012.02.21"/>
+    <meta name="Vendor" content="Rally Software"/>
     <script type="text/javascript" src="/apps/1.33/sdk.js?apiVersion=1.43"></script>
 
     <script type="text/javascript">
-        var MAX_NAME_LEN = 115;
+    var MAX_NAME_LEN = 115;
         var APP_TYPE = "Story";
         var CARD_TYPE = "stories";
-        var colors = ['DarkOrange', 'Yellow', 'DeepSkyBlue', 'GreenYellow', 'Orchid', 'Red', 'Tomato', 'Turquoise', 'DarkOrchid'];
-        var icons = ['♠', '♣', '♥', '♦', '▲', '●', '■', '֎', '◘'];
+        var colors = ['Orange','Yellow','LightSkyBlue','GreenYellow','Orchid','Thistle','Cyan','PeachPuff','LightCoral'];
+        var icons = ['♠','♣','♥','♦','▲','●','■','֎','◘'];
 
         function PrintStoryCards(rallyDataSource) {
-            var datetextboxMmfEntry;
+            var datetextboxMmfEntry; 
             var releaseDropdown;
             var checkbox;
             var iconCheckbox;
             var featureColors = {};
-
+             
             function displayCards(results) {
                 dojo.empty(dojo.byId("features"));
-                dojo.empty(dojo.byId("cards"));
+                dojo.empty(dojo.byId("cards"));  
                 var storyId, i, f, name, theMarkup, data, feature, features, featureColor, featureIcon;
                 var psiMarkup = "";
 
@@ -40,7 +39,7 @@
                     }
                 }
 
-                if (checkbox.getChecked()) {
+                if(checkbox.getChecked()){
                     psiMarkup = createPSIFeatureList();
                 }
 
@@ -62,7 +61,7 @@
                         featureColor = "white";
                         featureIcon = "";
                     }
-
+                    
                     if (CARD_TYPE === 'stories') {
                         storyId = data[i].FormattedID;
                         taskId = "";
@@ -70,23 +69,20 @@
                         storyId = data[i].WorkProduct.FormattedID;
                         taskId = results.tasks[i].FormattedID;
                     }
-
+        
                     theMarkup = createMarkup(i, data.length, name, feature,
-                        storyId, taskId, featureColor, featureIcon);
-
+                            storyId, taskId, featureColor, featureIcon);
+                    
                     dojo.byId("cards").innerHTML += theMarkup;
                 }
             }
 
             function setColor(feature, featureColors) {
                 if (!featureColors.hasOwnProperty(feature)) {
-                    featureColors[feature] = {
-                        'color': colors[Object.keys(featureColors).length],
-                        'icon': icons[Object.keys(featureColors).length]
-                    };
+                    featureColors[feature] = {'color':colors[Object.keys(featureColors).length], 'icon': icons[Object.keys(featureColors).length]};
                 }
             }
-
+        
             function createMarkup(cardNum, totalCards, name, feature, storyId, taskId, featureColor, featureIcon) {
                 var theMarkup, id;
                 if (CARD_TYPE === 'stories') {
@@ -95,65 +91,65 @@
                     id = taskId + ':' + storyId;
                 }
                 theMarkup =
-                    '<div class="artifact">' +
-                    '<div class="header" style="box-shadow: inset 0 0 0 1000px ' + featureColor + ';">' +
-                    '<div>' +
-                    '<div class="story-id">';
-                if (iconCheckbox.getChecked()) {
-                    theMarkup = theMarkup + '<div class="icon1" style="font-size:30px;">' + featureIcon + '</div>' +
-                        id +
-                        '<i class="icon2" style="font-size:30px;">' + featureIcon + '</i>';
-                } else {
-                    theMarkup = theMarkup + id;
-                }
-                theMarkup = theMarkup + '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="content">' +
-                    '<div class="card-title">' + name + '</div>' +
-                    '<div class="feature">' + feature + '</div>' +
-                    '</div>' +
-                    '</div>';
-
+                        '<div class="artifact">' +
+                                '<div class="header" style="box-shadow: inset 0 0 0 1000px ' + featureColor + ';">' +
+                                '<div>' +
+                                '<div class="story-id">'; 
+                        if(iconCheckbox.getChecked()){
+                                theMarkup = theMarkup + '<div class="icon1" style="font-size:30px;">' + featureIcon + '</div>' + 
+                                                         id +
+                                                         '<i class="icon2" style="font-size:30px;">' + featureIcon + '</i>'; 
+                        } else {
+                                theMarkup = theMarkup + id;
+                        }
+                        theMarkup = theMarkup + '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="content">' +
+                                '<div class="card-title">' + name + '</div>' +
+                                '<div class="feature">' + feature + '</div>' +
+                                '</div>' +
+                                '</div>';
+        
                 if ((cardNum + 1) % 4 === 0) {
                     theMarkup = theMarkup + '<div class=pb></div>';
                 } else if (cardNum === totalCards - 1) {
                     theMarkup = theMarkup + '<div class=cb>&nbsp;</div>';
                 }
-
+        
                 return theMarkup;
             }
 
             function createPSIFeatureList() {
                 var thePSIMarkup =
-                    '<div class="featureList"><div class="featureBox"><div class="featureTitle">' + releaseDropdown.getSelectedName() + '</div></div>';
+                        '<div class="featureList"><div class="featureBox"><div class="featureTitle">' + releaseDropdown.getSelectedName() + '</div></div>';
                 for (f = 0; f < Object.values(featureColors).length; f++) {
                     featureString = Object.keys(featureColors)[f];
-                    thePSIMarkup = thePSIMarkup +
-                        '<div class="featureBox" style="box-shadow: inset 0px 0px 5px 20px ' + featureColors[featureString].color + ';">';
-                    if (iconCheckbox.getChecked()) {
-                        thePSIMarkup = thePSIMarkup + '<div class="feature-icon" style="font-size:35px;">' + featureColors[featureString].icon + '</div>';
-                    }
-                    thePSIMarkup = thePSIMarkup + '<div class="featureString">' + featureString + '</div>' +
+                    thePSIMarkup = thePSIMarkup + 
+                        '<div class="featureBox" style="box-shadow: inset 0px 0px 5px 200px ' + featureColors[featureString].color + ';">'; 
+                            if(iconCheckbox.getChecked()){ 
+                                thePSIMarkup = thePSIMarkup + '<div class="feature-icon" style="font-size:35px;">' + featureColors[featureString].icon + '</div>';
+                            }
+                            thePSIMarkup = thePSIMarkup + '<div class="featureString">' + featureString + '</div>' + 
                         '</div>';
                 }
                 thePSIMarkup = thePSIMarkup + '<div class=pb></div>';
                 return thePSIMarkup;
             }
-
+        
             function runQuery() {
                 featureColors = {};
                 dojo.empty(dojo.byId("cards"));
                 var queryArray = [];
                 var queryString = '(Release.Name contains "' + releaseDropdown.getSelectedName() + '")';
-                if (datetextboxMmfEntry.getValue().localeCompare("") != 0) {
-                    var subtractDays = parseInt(datetextboxMmfEntry.getValue()) * (-1);
+                if(datetextboxMmfEntry.getValue().localeCompare("") != 0){
+                    var subtractDays = parseInt(datetextboxMmfEntry.getValue())*(-1);
                     var date = new Date();
                     date.setDate(date.getDate() + subtractDays);
                     var dateToCompare = date.toISOString();
-                    queryString = '(' + queryString + 'AND (CreationDate > ' + dateToCompare + '))'
+                    queryString = '(' + queryString + 'AND (CreationDate > '+ dateToCompare +'))'
                 }
-
+                
                 queryArray[0] = {
                     key: CARD_TYPE,
                     type: 'hierarchicalrequirement',
@@ -170,7 +166,7 @@
                 };
                 rallyDataSource.findAll(queryArray, displayCards);
             }
-
+        
             function getStyleSheet() {
                 var styleSheet;
                 dojo.forEach(dojo.query('style'), function(s) {
@@ -180,18 +176,18 @@
                 });
                 return styleSheet.innerHTML;
             }
-
+        
             function printPop() {
                 var title, options, printWindow, doc, cardMarkup;
-
+        
                 title = CARD_TYPE.slice(0, 1).toUpperCase() + CARD_TYPE.slice(1);
                 options = "toolbar=1,menubar=1,scrollbars=yes,scrolling=yes,resizable=yes,width=1000,height=500";
                 printWindow = window.open('', title, options);
                 doc = printWindow.document;
-
+        
                 cardMarkup = dojo.byId("printSection").innerHTML;
                 console.log(cardMarkup);
-
+        
                 doc.write('<html><head><title>' + title + '</title>');
                 doc.write('<style>');
                 doc.write(getStyleSheet());
@@ -200,15 +196,15 @@
                 doc.write(cardMarkup);
                 doc.write('</body></html>');
                 doc.close();
-
+        
                 printWindow.print();
                 return false;
             }
-
+        
             this.display = function() {
                 releaseDropdown = new rally.sdk.ui.ReleaseDropdown({}, rallyDataSource);
                 releaseDropdown.display("releaseDropdown", runQuery);
-
+                
                 var checkboxConfig = {
                     label: "Show PSI Feature List",
                     checked: false,
@@ -218,7 +214,7 @@
                 checkbox = new rally.sdk.ui.basic.CheckBox(checkboxConfig);
                 checkbox.display("checkbox", runQuery);
 
-                var iconCheckboxConfig = {
+               var iconCheckboxConfig = {
                     label: "Show Icons",
                     checked: false,
                     showLabel: true
@@ -253,29 +249,30 @@
                 button.display("buttonDiv", printPop);
             };
         }
+
     </script>
     <style type="text/css" title="printCards">
-        /* PLEASE LEAVE THIS STYLESHEET INLINE SINCE TITLE IS NECESSARY */
-        
+            /* PLEASE LEAVE THIS STYLESHEET INLINE SINCE TITLE IS NECESSARY */
         @media print {
             #interface {
                 display: none;
             }
+
             .pb {
                 page-break-after: always;
                 clear: both;
             }
         }
-        
-        #buttonDiv;
+
+        #buttonDiv ;
         #releaseDropdown;
         #checkbox;
         #iconCheckbox;
-        #interface,
-        #printSection {
+
+        #interface, #printSection {
             margin: 20px;
         }
-        
+
         html {
             background-color: #fff;
             color: #000;
@@ -283,17 +280,17 @@
             margin: 0;
             padding: 0;
         }
-        
+
         body {
             background-color: #fff;
             margin: 0;
             padding: 0;
         }
-        
+
         .cb {
             clear: both;
         }
-        
+
         .artifact {
             background-color: #fff;
             border: 1.5px solid #000;
@@ -304,7 +301,7 @@
             overflow: hidden;
             width: 4.3in;
         }
-        
+
         .header {
             border: 1px;
             display: table-cell;
@@ -312,22 +309,20 @@
             vertical-align: middle;
             width: 4.3in;
         }
-        
-        .featureList {
+
+       .featureList {
             float: center;
             font: bold 20px Genova, sans-serif;
             padding-top: 1em;
             text-align: center;
         }
-        
         .featureBox {
             padding: 1em;
-            margin: 20px;
+            margin: 5px;
             width: 7in;
             height: 40px;
             display: table;
         }
-        
         .featureString {
             display: table-cell;
             font: bold 20px Genova, sans-serif;
@@ -335,20 +330,19 @@
             padding-right: 8px;
             padding-left: 8px;
         }
-        
         .featureTitle {
             display: table-cell;
             font: bold 30px Genova, sans-serif;
             vertical-align: middle;
         }
-        
+
         .card-title {
             float: center;
             font: bold 28px Genova, sans-serif;
             padding-top: 1em;
             text-align: center;
         }
-        
+
         .description {
             float: left;
             font: 12pt Georgia, sans-serif;
@@ -359,80 +353,74 @@
             width: 100%;
             word-wrap: break-word;
         }
-        
+
         .story-id {
             font: bold 70px Genova, sans-serif;
             margin-top: 0.1em;
             margin-bottom: 0.1em;
             text-align: center;
         }
-        
-        .feature {
+
+        .feature{
             bottom: 0.5em;
             position: absolute;
             margin-left: 0.5em;
             right: 0.5em;
         }
-        
-        .feature-icon {
+
+        .feature-icon{
             position: relative;
             left: 5px;
             text-align: left;
         }
-        
-        .icon1 {
-            font-size: 70px;
+        .icon1{
+            font-size:70px;
             top: 1px;
             position: absolute;
             left: 10px;
         }
-        
-        .icon2 {
-            font-size: 70px;
+        .icon2{
+            font-size:70px;
             top: 1px;
             position: absolute;
             right: 10px;
         }
-        
+
         .content {
             height: 2.4in;
             overflow: hidden;
             width: 4.3in;
         }
+
     </style>
     <script type="text/javascript">
+
         function onLoad() {
             rally.sdk.ui.AppHeader.setHelpTopic("241");
             var rallyDataSource = new rally.sdk.data.RallyDataSource('__WORKSPACE_OID__',
-                '__PROJECT_OID__',
-                '__PROJECT_SCOPING_UP__',
-                '__PROJECT_SCOPING_DOWN__');
+                    '__PROJECT_OID__',
+                    '__PROJECT_SCOPING_UP__',
+                    '__PROJECT_SCOPING_DOWN__');
             var printStoryCards = new PrintStoryCards(rallyDataSource);
             printStoryCards.display(dojo.body());
         }
 
         rally.addOnLoad(onLoad);
+
     </script>
 </head>
-
 <body>
-    <div style="float:right" id="help"></div>
-    <div id="interface">
-        <div id="releaseDropdown"></div>
-        </br>
-        <div id="datetextboxMmfEntry"></div>
-        </br>
-        <div id="checkbox"></div>
-        </br>
-        <div id="iconCheckbox"></div>
-        </br>
-        <div id="buttonDiv"></div>
-        </br>
-    </div>
-    <div id="printSection">
-        <div id="features"></div>
-        <div id="cards"></div>
-    </div>
+<div style="float:right" id="help"></div>
+<div id="interface">
+    <div id="releaseDropdown"></div></br>
+    <div id="datetextboxMmfEntry"></div></br>
+    <div id="checkbox"></div></br>
+    <div id="iconCheckbox"></div></br>
+    <div id="buttonDiv"></div></br>
+</div>
+<div id="printSection">
+    <div id="features"></div>
+    <div id="cards"></div>
+</div>
 </body>
-
 </html>
